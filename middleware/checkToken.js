@@ -5,7 +5,7 @@ const { JWT_SECRET } = process.env;
 export default async (req, res, next) => {
     const token = req.headers.authorization;
 
-    if(token) {
+    if(!token) {
         res.status(401).json({message: 'Unauthorized'});
         return;
     }
