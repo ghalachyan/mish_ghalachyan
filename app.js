@@ -4,6 +4,7 @@ import express from 'express';
 
 import sequelize from './clients/sequelize.mysql.js';
 import models from './migration.js';
+
 import indexRouter from './routes/index.js';
 
 const port = process.env.PORT;
@@ -15,16 +16,7 @@ app.use('/', indexRouter);
 
 (async () => {
     try {
-        sequelize.authenticate().then(() => {
-            console.log('Connection has been established successfuly.');
-        }).catch((e) => {
-            console.error('Unable to connect to the database:', e);
-        });
-
-        for (const model of models) {
-            await model.sync({ alter: true });
-            console.log(`${model.name} table created or updated`);
-        }
+        await sequelize;
 
         app.listen(port, () => {
             console.log(`Server is running on port ${port}`);
