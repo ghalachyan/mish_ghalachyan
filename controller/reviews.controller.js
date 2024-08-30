@@ -139,4 +139,31 @@ export default {
             });
         }
     },
+
+    async deleteReviews(req, res) {
+        const {id: userId} = req.user;
+        const {reviewId} = req.params;
+
+        const reviewToDelete = await Reviews.findByPk(reviewId);
+
+        if(!reviewToDelete){
+            res.status(404).json({
+                message: 'Review not found.',
+            });
+            return
+        }
+
+        if(reviewToDelete.userId !== userId) {
+            res.status(403).json({
+                message: 'Unauthorized to delete this review.'
+            });
+            return;
+        };
+
+        await reviewToDelete.destroy();
+
+        res.status(200).json({
+            message: 'Review deleted successfully.'
+        })
+    }
 }

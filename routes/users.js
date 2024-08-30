@@ -11,6 +11,7 @@ const router = Router();
 router.post('/registration', validate(userSchema.registration, 'body'), usersController.registration);
 router.post('/login', validate(userSchema.login, 'body'), usersController.login);
 
-router.put('/:userId/reviews/update/:reviewId',checkToken, validate(reviewsSchema.updateReview, 'body'), reviewsController.updateReviews);
+router.put('/reviews/update/:reviewId',checkToken, validate(reviewsSchema.updateReview, 'body'), reviewsController.updateReviews);
+router.delete('/reviews/delete/:reviewId',checkToken, validate(reviewsSchema.deleteReviews, 'params'), reviewsController.deleteReviews);
 
 export default router;
