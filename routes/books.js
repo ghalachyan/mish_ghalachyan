@@ -7,5 +7,6 @@ import controller from '../controller/books.controller.js';
 const router = Router();
 
 router.post('/create', checkToken, validate(bookSchema.createBook, 'body'), controller.createBook);
+router.get('/list', checkToken, controller.getBooks);
 
 export default router;
