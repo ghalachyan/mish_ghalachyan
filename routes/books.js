@@ -12,6 +12,6 @@ router.post('/create', checkToken, validate(bookSchema.createBook, 'body'), book
 router.get('/list', checkToken, booksController.getBooks);
 
 router.post('/:bookId/reviews', checkToken,validate(reviewSchema.createReview, 'body'), reviewsController.createReview);
-
+router.get('/:bookId/reviews', checkToken,validate(reviewSchema.getReviews, 'params'), reviewsController.getReviews);
 
 export default router;
