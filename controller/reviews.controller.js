@@ -99,5 +99,44 @@ export default {
                 error: e.message,
             });
         }
-    }
+    },
+
+    async updateReviews(req, res) {
+        try {
+            const { id: userId } = req.user;
+            const { reviewId } = req.params;
+            const { newReview, newRating } = req.body;
+
+            const reviewsExists = await Reviews.findByPk(reviewId);
+
+            if (!reviewsExists) {
+                res.status(404).json({
+                    message: 'Review not found',
+                })
+                return;
+            };
+
+            const updatedReview = await reviewsExists.update(
+                {
+                    review: newReview,
+                    rating: newRating
+                },
+                {
+                  where:{
+                    userId,
+                  }  
+                }
+            );
+
+            res.status(200).json({
+                message: 'Review updated successfully.',
+                updatedReview
+            })
+        } catch (e) {
+            res.status(500).json({
+                message: 'Internal server error',
+                error: e.message,
+            });
+        }
+    },
 }
