@@ -5,9 +5,9 @@ import Users from '../models/Users.js';
 export default {
     async createReview(req, res) {
         try {
-            const { id: userId } = req.user;
-            const { bookId } = req.params;
-            const { review, rating } = req.body;
+            const {id: userId} = req.user;
+            const {bookId} = req.params;
+            const {review, rating} = req.body;
 
             const bookExists = await Books.findByPk(bookId);
 
@@ -51,12 +51,12 @@ export default {
             const total = await Reviews.count();
 
             const order = req.query.order;
-            const  orderBy = req.query.orderBy;
+            const orderBy = req.query.orderBy;
             let page = +req.query.page;
             let limit = +req.query.limit;
             let offset = (page - 1) * limit;
 
-            const { bookId } = req.params;
+            const {bookId} = req.params;
 
             const maxPageCount = Math.ceil(total / limit)
 
@@ -86,18 +86,20 @@ export default {
                     },
                     {
                         model: Users,
-                        attributes: ['id', 'userName', 'email']
-                    }
+                        attributes: {
+                            exclude: ['password']
+                        }
+                    },
                 ],
                 offset,
                 limit,
-                order:[
+                order: [
                     [orderBy, order]
                 ],
             });
 
             const reviewsRating = await Reviews.findAll()
-            const ratings = reviewsRating.map(review =>  review.rating);
+            const ratings = reviewsRating.map(review => review.rating);
 
             let result = 0;
 
@@ -105,7 +107,7 @@ export default {
                 result += ratings[i];
             }
 
-            let ratingResult = result/ratings.length;
+            let ratingResult = result / ratings.length;
 
             if (reviews.length > 0) {
                 res.status(200).json({
@@ -129,9 +131,9 @@ export default {
 
     async updateReviews(req, res) {
         try {
-            const { id: userId } = req.user;
-            const { reviewId } = req.params;
-            const { newReview, newRating } = req.body;
+            const {id: userId} = req.user;
+            const {reviewId} = req.params;
+            const {newReview, newRating} = req.body;
 
             const reviewsExists = await Reviews.findByPk(reviewId);
 
@@ -148,9 +150,9 @@ export default {
                     rating: newRating
                 },
                 {
-                  where:{
-                    userId,
-                  }  
+                    where: {
+                        userId,
+                    }
                 }
             );
 
@@ -172,14 +174,14 @@ export default {
 
         const reviewToDelete = await Reviews.findByPk(reviewId);
 
-        if(!reviewToDelete){
+        if (!reviewToDelete) {
             res.status(404).json({
                 message: 'Review not found.',
             });
             return
         }
 
-        if(reviewToDelete.userId !== userId) {
+        if (reviewToDelete.userId !== userId) {
             res.status(403).json({
                 message: 'Unauthorized to delete this review.'
             });
