@@ -19,7 +19,7 @@ Reviews.init(
         },
 
         rating: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false
         },
 

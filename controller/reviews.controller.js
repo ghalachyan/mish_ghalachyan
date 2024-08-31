@@ -102,7 +102,7 @@ export default {
             let result = 0;
 
             for (let i = 0; i < ratings.length; i++) {
-                result += +ratings[i];
+                result += ratings[i];
             }
 
             let ratingResult = result/ratings.length;
