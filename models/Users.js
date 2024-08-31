@@ -1,5 +1,7 @@
 import sequelize from '../clients/sequelize.mysql.js';
 import { DataTypes, Model } from 'sequelize';
+import Books from "./Books.js";
+import Reviews from "./Reviews.js";
 
 class Users extends Model { }
 
@@ -25,6 +27,10 @@ Users.init(
         password: {
             type: DataTypes.STRING,
             allowNull: false,
+            get() {
+                const rawValue = this.getDataValue('password');
+                return rawValue ? '*****' : null; // Masking the password
+            },
         },
 
     },
@@ -40,6 +46,9 @@ Users.init(
             }
         ]
     }
-)
+);
+
+Users.hasMany(Books);
+Users.hasMany(Reviews);
 
 export default Users;

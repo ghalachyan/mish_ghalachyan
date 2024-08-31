@@ -1,5 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../clients/sequelize.mysql.js';
+import Users from "./Users.js";
+import Reviews from "./Reviews.js";
 
 class Books extends Model { }
 
@@ -35,6 +37,13 @@ Books.init(
             }
         ]
     }
-)
+);
+
+Books.belongsTo(Users, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+    foreignKey: 'userId'
+});
+Books.hasMany(Reviews);
 
 export default Books;

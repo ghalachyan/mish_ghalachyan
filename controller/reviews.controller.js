@@ -86,9 +86,6 @@ export default {
                     },
                     {
                         model: Users,
-                        attributes: {
-                            exclude: ['password']
-                        }
                     },
                 ],
                 offset,
