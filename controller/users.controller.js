@@ -11,11 +11,11 @@ export default {
             } = req.body
 
             const [param1, param2] = await Users.findOrCreate({
-                where: { email: email.toLowerCase()},
+                where: {email: email.toLowerCase()},
                 defaults: {
                     userName,
                     email: email.toLowerCase(),
-                    password: utils.hashPassword(password), 
+                    password: utils.hashPassword(password),
                 },
             });
 
@@ -40,39 +40,43 @@ export default {
 
     async login(req, res) {
         try {
-          const { email, password } = req.body;
-          const emailLowerCase = email.toLowerCase();
-    
-          const user = await Users.findOne({where: {email: emailLowerCase}});
-    
-          if (!user || utils.hashPassword(password) != user.password) {
-            res.status(401).json({
-              message: 'Invalid email or password',
+            const {email, password} = req.body;
+            const emailLowerCase = email.toLowerCase();
+
+            const user = await Users.findOne({
+                where: {email: emailLowerCase}
             });
-            return;
-          }
-          
-          const payload = {
-            id: user.id,
-            email: user.email,
-          };
-    
-          const expirsIn = {
-            expiresIn: '50m'
-          };
-    
-          const token = utils.createToken(payload, expirsIn);
-    
-          res.status(200).json({
-            message: 'Login successfully',
-            token,
-          });
+
+            const hasPassword = utils.hashPassword(password);
+
+            if (!user || hasPassword !== user.password) {
+                res.status(401).json({
+                    message: 'Invalid email or password',
+                });
+                return;
+            }
+
+            const payload = {
+                id: user.id,
+                email: user.email,
+            };
+
+            const expiresIn = {
+                expiresIn: '50m'
+            };
+
+            const token = utils.createToken(payload, expiresIn);
+
+            res.status(200).json({
+                message: 'Login successfully',
+                token,
+            });
 
         } catch (e) {
-          res.status(500).json({
-            message: 'Internal server error',
-            error: e.message,
-          });
+            res.status(500).json({
+                message: 'Internal server error',
+                error: e.message,
+            });
         }
-      },
+    },
 }

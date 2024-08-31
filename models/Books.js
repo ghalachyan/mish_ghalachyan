@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../clients/sequelize.mysql.js';
 
-class Books extends Model { };
+class Books extends Model { }
 
 Books.init(
     {
@@ -31,7 +31,7 @@ Books.init(
         indexes: [
             {
                 unique: true,
-                fields: ['author']
+                fields: ['title'],
             }
         ]
     }

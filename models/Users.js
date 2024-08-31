@@ -1,7 +1,7 @@
 import sequelize from '../clients/sequelize.mysql.js';
 import { DataTypes, Model } from 'sequelize';
 
-class Users extends Model { };
+class Users extends Model { }
 
 Users.init(
     {
@@ -36,7 +36,7 @@ Users.init(
         indexes: [
             {
                 unique: true,
-                fields: ['email']
+                fields: ['email', 'userName'],
             }
         ]
     }

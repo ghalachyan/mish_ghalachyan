@@ -1,20 +1,33 @@
 import Books from '../models/Books.js';
 import Users from '../models/Users.js';
+import {and} from "sequelize";
 
 export default {
     async createBook(req, res) {
         try {
-            const { id: userId } = req.user;
-            const { title, author } = req.body;
+            const {id: userId} = req.user;
+            const {title, author} = req.body;
 
             const userExists = await Users.findByPk(userId);
+            const books = await Books.findOne({
+                where: {
+                    title: title,
+                }
+            });
 
             if (!userExists) {
                 res.status(404).json({
                     message: 'User not found.',
                 })
                 return;
-            };
+            }
+
+            if (books) {
+                res.status(404).json({
+                    message: 'Title must be unique.',
+                })
+                return;
+            }
 
             const newBook = await Books.create({
                 title,
@@ -45,8 +58,22 @@ export default {
 
     async getBooks(req, res) {
         try {
-            let page = 1;
-            let limit = 10;
+            const total = await Books.count();
+
+            const order = req.query.order;
+            const  orderBy = req.query.orderBy;
+            let page = +req.query.page;
+            let limit = +req.query.limit;
+            let offset = (page - 1) * limit;
+
+            const maxPageCount = Math.ceil(total / limit)
+
+            if (page > maxPageCount) {
+                res.status(404).json({
+                    massage: 'Book does not found.',
+                });
+                return;
+            }
 
             const books = await Books.findAll({
                 include: [
@@ -55,11 +82,11 @@ export default {
                         attributes: ['id', 'userName', 'email']
                     }
                 ],
-                order: [
-                    ['createdAt', 'Desc']
-                ],
-                offset: (page - 1) * limit,
+                offset,
                 limit,
+                order:[
+                    [orderBy, order]
+                ],
             });
 
             if (books.length > 0) {

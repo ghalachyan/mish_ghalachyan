@@ -7,7 +7,10 @@ export default {
     }),
 
     getReviews: Joi.object({
-        bookId: Joi.number().integer().positive().required(),
+        page: Joi.number().integer().min(1).max(100000).default(1).optional(),
+        limit: Joi.number().integer().min(5).max(20).default(5).optional(),
+        order: Joi.string().valid('asc', 'desc').default('desc').optional(),
+        orderBy: Joi.string().valid('createdAt', 'updatedAt').default('createdAt').optional(),
     }),
 
     updateReview: Joi.object({

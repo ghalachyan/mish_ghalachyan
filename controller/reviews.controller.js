@@ -16,7 +16,7 @@ export default {
                     message: 'Book not found',
                 })
                 return;
-            };
+            }
 
             const newReview = await Reviews.create({
                 review,
@@ -48,9 +48,24 @@ export default {
 
     async getReviews(req, res) {
         try {
-            let page = 1;
-            let limit = 10;
+            const total = await Reviews.count();
+
+            const order = req.query.order;
+            const  orderBy = req.query.orderBy;
+            let page = +req.query.page;
+            let limit = +req.query.limit;
+            let offset = (page - 1) * limit;
+
             const { bookId } = req.params;
+
+            const maxPageCount = Math.ceil(total / limit)
+
+            if (page > maxPageCount) {
+                res.status(404).json({
+                    massage: 'Review does not found.',
+                });
+                return;
+            }
 
             const bookExists = await Books.findByPk(bookId);
 
@@ -59,7 +74,7 @@ export default {
                     message: 'Book not found',
                 })
                 return;
-            };
+            }
 
             const reviews = await Reviews.findAll({
                 where: {
@@ -68,18 +83,18 @@ export default {
                 include: [
                     {
                         model: Books,
-                        attributes: ['id', 'title', 'author']
                     },
                     {
                         model: Users,
                         attributes: ['id', 'userName', 'email']
                     }
                 ],
-                order: [
-                    ['createdAt', 'Desc']
-                ],
-                offset: (page - 1) * limit,
+                offset,
                 limit,
+                order:[
+                    [orderBy, order]
+                ],
+
             });
 
             if (reviews.length > 0) {
