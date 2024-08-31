@@ -79,7 +79,9 @@ export default {
                 include: [
                     {
                         model: Users,
-                        attributes: ['id', 'userName', 'email']
+                        attributes: {
+                            exclude: ['password']
+                        }
                     }
                 ],
                 offset,
