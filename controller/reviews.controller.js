@@ -94,13 +94,24 @@ export default {
                 order:[
                     [orderBy, order]
                 ],
-
             });
+
+            const reviewsRating = await Reviews.findAll()
+            const ratings = reviewsRating.map(review =>  review.rating);
+
+            let result = 0;
+
+            for (let i = 0; i < ratings.length; i++) {
+                result += +ratings[i];
+            }
+
+            let ratingResult = result/ratings.length;
 
             if (reviews.length > 0) {
                 res.status(200).json({
                     message: 'Reviews retrieved successfully',
-                    reviews
+                    reviews,
+                    ratingResult
                 });
                 return;
             }
@@ -129,7 +140,7 @@ export default {
                     message: 'Review not found',
                 })
                 return;
-            };
+            }
 
             const updatedReview = await reviewsExists.update(
                 {
@@ -173,7 +184,7 @@ export default {
                 message: 'Unauthorized to delete this review.'
             });
             return;
-        };
+        }
 
         await reviewToDelete.destroy();
 
