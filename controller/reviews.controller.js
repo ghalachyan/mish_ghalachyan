@@ -112,7 +112,7 @@ export default {
                     reviews,
                     ratingResult
                 });
-                return
+                return;
             }
 
             res.status(404).json({
