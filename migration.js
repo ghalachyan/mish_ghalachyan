@@ -13,7 +13,6 @@ Users.hasMany(Reviews, {
     foreignKey: 'userId'
 });
 
-
 Books.belongsTo(Users );
 Books.hasMany(Reviews,  {
     onDelete: "CASCADE",
