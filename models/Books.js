@@ -39,11 +39,4 @@ Books.init(
     }
 );
 
-Books.belongsTo(Users, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-    foreignKey: 'userId'
-});
-Books.hasMany(Reviews);
-
 export default Books;

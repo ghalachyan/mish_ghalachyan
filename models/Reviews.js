@@ -34,15 +34,4 @@ Reviews.init(
     }
 );
 
-Reviews.belongsTo(Users, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-    foreignKey: 'userId'
-});
-Reviews.belongsTo(Books, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-    foreignKey: 'bookId'
-});
-
 export default Reviews;

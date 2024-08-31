@@ -48,7 +48,4 @@ Users.init(
     }
 );
 
-Users.hasMany(Books);
-Users.hasMany(Reviews);
-
 export default Users;
