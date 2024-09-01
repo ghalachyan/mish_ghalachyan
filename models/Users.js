@@ -1,7 +1,7 @@
 import sequelize from '../clients/sequelize.mysql.js';
 import {DataTypes} from 'sequelize';
 
-const Users = sequelize.define('user',
+const Users = sequelize.define('users',
     {
         id: {
             type: DataTypes.BIGINT.UNSIGNED,
