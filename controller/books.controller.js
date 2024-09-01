@@ -79,9 +79,6 @@ export default {
                 include: [
                     {
                         model: Users,
-                        attributes: {
-                            exclude: ['password']
-                        }
                     }
                 ],
                 offset,

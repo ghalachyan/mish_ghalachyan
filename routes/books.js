@@ -7,6 +7,7 @@ import checkToken from '../middleware/checkToken.js';
 import booksController from '../controller/books.controller.js';
 import reviewsController from "../controller/reviews.controller.js";
 import favoritesController from '../controller/favorites.controller.js';
+import categoriesController from "../controller/categories.controller.js";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.post('/:bookId/favorite', checkToken, validate(favoritesSchema.markFavori
 
 router.get('/list', checkToken, validate(booksSchema.getBooks, 'query'), booksController.getBooks);
 router.get('/:bookId/reviews', checkToken,validate(reviewsSchema.getReviews, 'query'), reviewsController.getReviews);
+router.get('/categories', checkToken, categoriesController.getCategories);
 
 export default router;

@@ -7,5 +7,6 @@ import adminController from '../controller/admin.controller.js';
 const router = Router();
 
 router.post('/categories',checkToken, validate(adminSchema.addCategory, 'body'), adminController.addCategory);
+router.get('/users',checkToken,validate(adminSchema.getUsers, 'query'),  adminController.getUsers);
 
 export default router;
