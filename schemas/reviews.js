@@ -14,8 +14,8 @@ export default {
     }),
 
     updateReview: Joi.object({
-        newReview: Joi.string().trim().min(3).max(5000).required(),
-        newRating: Joi.number().integer().min(1).max(5).positive().required(),
+        review: Joi.string().trim().min(3).max(5000).required(),
+        rating: Joi.number().integer().min(1).max(5).positive().required(),
     }),
 
     deleteReviews: Joi.object({

@@ -1,17 +1,12 @@
 import { Router } from 'express';
-import bookSchema from '../schemas/books.js';
-import reviewSchema from '../schemas/reviews.js';
+import booksSchema from '../schemas/books.js';
 import validate from '../middleware/validate.js';
 import checkToken from '../middleware/checkToken.js';
-import booksController from '../controller/books.controller.js';
-import reviewsController from '../controller/reviews.controller.js';
+import controller from '../controller/books.controller.js';
 
 const router = Router();
 
-router.post('/create', checkToken, validate(bookSchema.createBook, 'body'), booksController.createBook);
-router.get('/list', checkToken, validate(bookSchema.getBooks, 'query'), booksController.getBooks);
-
-router.post('/:bookId/reviews', checkToken,validate(reviewSchema.createReview, 'body'), reviewsController.createReview);
-router.get('/:bookId/reviews', checkToken,validate(reviewSchema.getReviews, 'query'), reviewsController.getReviews);
+router.post('/create', checkToken, validate(booksSchema.createBook, 'body'), controller.createBook);
+router.get('/list', checkToken, validate(booksSchema.getBooks, 'query'), controller.getBooks);
 
 export default router;

@@ -1,11 +1,7 @@
 import sequelize from '../clients/sequelize.mysql.js';
-import { DataTypes, Model } from 'sequelize';
-import Books from "./Books.js";
-import Reviews from "./Reviews.js";
+import { DataTypes } from 'sequelize';
 
-class Users extends Model { }
-
-Users.init(
+const Users = sequelize.define('user',
     {
         id:{
             type: DataTypes.BIGINT.UNSIGNED,
@@ -28,14 +24,12 @@ Users.init(
             type: DataTypes.STRING,
             allowNull: false,
             get() {
-                const rawValue = this.getDataValue('password');
-                return rawValue ? '*****' : null; // Masking the password
+                return '*****' ;
             },
         },
 
     },
     {
-        sequelize,
         timestamps: true,
         modelName: 'users',
         tableName: 'users',

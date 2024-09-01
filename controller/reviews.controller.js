@@ -130,7 +130,7 @@ export default {
         try {
             const {id: userId} = req.user;
             const {reviewId} = req.params;
-            const {newReview, newRating} = req.body;
+            const {review, rating} = req.body;
 
             const reviewsExists = await Reviews.findByPk(reviewId);
 
@@ -143,8 +143,8 @@ export default {
 
             const updatedReview = await reviewsExists.update(
                 {
-                    review: newReview,
-                    rating: newRating
+                    review: review,
+                    rating: rating
                 },
                 {
                     where: {

@@ -13,6 +13,7 @@ Users.hasMany(Reviews, {
     foreignKey: 'userId'
 });
 
+
 Books.belongsTo(Users );
 Books.hasMany(Reviews,  {
     onDelete: "CASCADE",
@@ -26,7 +27,7 @@ Reviews.belongsTo(Books);
 const models = [
     Users,
     Books,
-    Reviews
+    Reviews,
 ];
 
 (async () => {

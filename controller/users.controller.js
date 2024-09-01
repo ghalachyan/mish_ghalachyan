@@ -47,9 +47,9 @@ export default {
                 where: {email: emailLowerCase}
             });
 
-            const hasPassword = utils.hashPassword(password);
+            const hashPassword = utils.hashPassword(password);
 
-            if (!user || hasPassword !== user.password) {
+            if (!user || hashPassword !== user.getDataValue('password')) {
                 res.status(401).json({
                     message: 'Invalid email or password',
                 });
