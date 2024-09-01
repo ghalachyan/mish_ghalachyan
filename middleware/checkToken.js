@@ -11,8 +11,16 @@ export default async (req, res, next) => {
     }
 
     try{
-        const deryptedData = jwt.verify(token, JWT_SECRET);
-        req.user = deryptedData;
+        const decryptedData = jwt.verify(token, JWT_SECRET);
+
+        if (!decryptedData) {
+            res.status(401).json({
+                message: 'Invalid or expired token',
+            });
+            return;
+        }
+
+        req.user = decryptedData;
 
         next();
     }catch(e) {

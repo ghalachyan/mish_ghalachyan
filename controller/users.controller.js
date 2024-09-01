@@ -67,6 +67,15 @@ export default {
 
             const token = utils.createToken(payload, expiresIn);
 
+            if(user.role === 'admin') {
+                res.status(200).json({
+                    message: 'Login successfully',
+                    token,
+                    isAdmin: true
+                });
+                return;
+            }
+
             res.status(200).json({
                 message: 'Login successfully',
                 token,

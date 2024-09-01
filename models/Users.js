@@ -1,22 +1,22 @@
 import sequelize from '../clients/sequelize.mysql.js';
-import { DataTypes } from 'sequelize';
+import {DataTypes} from 'sequelize';
 
 const Users = sequelize.define('user',
     {
-        id:{
+        id: {
             type: DataTypes.BIGINT.UNSIGNED,
             autoIncrement: true,
             primaryKey: true,
             allowNull: false,
         },
 
-        userName:{
+        userName: {
             type: DataTypes.STRING,
             allowNull: false,
         },
 
         email: {
-            type: DataTypes. STRING,
+            type: DataTypes.STRING,
             allowNull: false
         },
 
@@ -24,8 +24,14 @@ const Users = sequelize.define('user',
             type: DataTypes.STRING,
             allowNull: false,
             get() {
-                return '*****' ;
+                return '*****';
             },
+        },
+
+        role: {
+            type: DataTypes.ENUM('user', 'admin'),
+            defaultValue: 'user',
+            allowNull: false,
         },
 
     },
