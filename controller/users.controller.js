@@ -79,6 +79,7 @@ export default {
             res.status(200).json({
                 message: 'Login successfully',
                 token,
+                isAdmin: false
             });
 
         } catch (e) {
