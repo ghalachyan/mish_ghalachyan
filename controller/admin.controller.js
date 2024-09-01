@@ -1,13 +1,16 @@
 import Category from "../models/Category.js";
+import Users from "../models/Users.js";
 
 export default {
     async addCategory(req, res) {
         try {
             const user = req.user;
             const {name} = req.body;
-            console.log(user);
-            if (!user || !user.isAdmin) {
-                return res.status(403).json({
+
+            const userExist = await Users.findByPk(user.id);
+
+            if (!user || userExist.role !== 'admin') {
+                 res.status(403).json({
                     message: 'Forbidden: Admins only'
                 });
                 return;
@@ -15,6 +18,7 @@ export default {
 
             const category = await Category.create({name});
             res.status(201).json({
+                message: 'category add successfully',
                 category,
             })
         } catch (e) {
