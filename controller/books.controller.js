@@ -121,45 +121,6 @@ export default {
 
     // async searchBooks(req, res) {
     //     try {
-    //         const {id: userId} = req.user;
-    //         const {title, author, category} = req.body;
-    //         const result = {};
-    //
-    //         const userExists = await Users.findByPk(userId);
-    //         if (!userExists) {
-    //             res.status(404).json({
-    //                 message: 'User not found.',
-    //             })
-    //             return;
-    //         }
-    //
-    //         if (title) {
-    //             result.title = {[Op.iLike]: `%${title}%`};
-    //         }
-    //
-    //         if (author) {
-    //             result.author = {[Op.iLike]: `%${author}%`};
-    //         }
-    //
-    //         if (category) {
-    //             result.category = {[Op.iLike]: `%${category}%`};
-    //         }
-    //
-    //         const books = await Books.findAll({
-    //             where: result,
-    //             include: [
-    //                 {model: Users}
-    //             ]
-    //         });
-    //
-    //         if (books.length > 0) {
-    //             return res.status(200).json({
-    //                 message: 'Books retrieved successfully', books
-    //             });
-    //         }
-    //         res.status(404).json({
-    //             message: 'No books found'
-    //         });
     //     } catch (e) {
     //         res.status(500).json({
     //             message: 'Internal server error',

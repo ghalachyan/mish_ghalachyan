@@ -13,7 +13,7 @@ const router = Router();
 router.post('/registration', validate(usersSchema.registration, 'body'), usersController.registration);
 router.post('/login', validate(usersSchema.login, 'body'), usersController.login);
 
-router.get('/:userId/favorites',validate(favoritesSchema.getFavorites, 'params'), favoritesController.getFavorites);
+router.get('/:userId/favorites',checkToken,validate(favoritesSchema.getFavorites, 'params'), favoritesController.getFavorites);
 
 router.put('/update/:reviewId',checkToken, validate(reviewsSchema.updateReview, 'body'), reviewsController.updateReviews);
 
