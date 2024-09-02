@@ -8,5 +8,7 @@ const router = Router();
 
 router.post('/categories',checkToken, validate(adminSchema.addCategory, 'body'), adminController.addCategory);
 router.get('/users',checkToken,validate(adminSchema.getUsers, 'query'),  adminController.getUsers);
+router.delete('/users/:userId',checkToken,validate(adminSchema.deleteUser, 'params'),  adminController.deleteUser);
+router.delete('/reviews/:reviewId',checkToken,validate(adminSchema.deleteReview, 'params'),  adminController.deleteReview);
 
 export default router;

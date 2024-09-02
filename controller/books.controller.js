@@ -1,6 +1,5 @@
 import Books from '../models/Books.js';
 import Users from '../models/Users.js';
-import {and} from "sequelize";
 
 export default {
     async createBook(req, res) {

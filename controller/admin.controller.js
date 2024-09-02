@@ -1,5 +1,6 @@
 import Category from "../models/Category.js";
 import Users from "../models/Users.js";
+import Reviews from "../models/Reviews.js";
 
 export default {
     async addCategory(req, res) {
@@ -76,6 +77,80 @@ export default {
                 message: 'Users retrieved successfully',
                 users,
             })
+        } catch (e) {
+            res.status(500).json({
+                message: 'Internal server error',
+                error: e.message,
+            });
+        }
+    },
+
+    async deleteUser(req, res) {
+        try {
+            const user = req.user;
+            const userId = req.params.userId;
+
+            const userIsExist = await Users.findByPk(user.id);
+
+            if (!user || userIsExist.role !== 'admin') {
+                res.status(403).json({
+                    message: 'Forbidden: Admins only'
+                });
+                return;
+            }
+
+            const userDelete = await Users.findByPk(userId);
+
+            if (!userDelete) {
+                res.status(404).json({
+                    message: 'User not found.',
+                });
+                return;
+            }
+
+            await userDelete.destroy();
+
+            res.status(200).json({
+                message: 'User deleted successfully',
+            })
+
+        } catch (e) {
+            res.status(500).json({
+                message: 'Internal server error',
+                error: e.message,
+            });
+        }
+    },
+
+    async deleteReview(req, res) {
+        try {
+            const user = req.user;
+            const reviewId = req.params.reviewId;
+
+            const userIsExist = await Users.findByPk(user.id);
+
+            if (!user || userIsExist.role !== 'admin') {
+                res.status(403).json({
+                    message: 'Forbidden: Admins only'
+                });
+                return;
+            }
+
+            const reviewDelete = await Reviews.findByPk(reviewId);
+
+            if (!reviewDelete) {
+                res.status(404).json({
+                    message: 'Review not found.',
+                });
+                return;
+            }
+
+            await reviewDelete.destroy();
+
+            res.status(200).json({
+                message: 'Review deleted successfully',
+            })
+
         } catch (e) {
             res.status(500).json({
                 message: 'Internal server error',
