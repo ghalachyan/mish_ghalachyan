@@ -17,9 +17,4 @@ export default {
         order: Joi.string().valid('asc', 'desc').default('desc').optional(),
         orderBy: Joi.string().valid('createdAt', 'updatedAt').default('createdAt').optional(),
     }),
-
-    // searchBook: Joi.object({
-    //     title: Joi.string().trim().min(3).max(100).required(),
-    //     author: Joi.string().trim().min(3).max(100).required(),
-    // }),
 }
