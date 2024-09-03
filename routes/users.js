@@ -14,6 +14,7 @@ router.post('/registration', validate(usersSchema.registration, 'body'), usersCo
 router.post('/login', validate(usersSchema.login, 'body'), usersController.login);
 
 router.get('/:userId/favorites',checkToken,validate(favoritesSchema.getFavorites, 'params'), favoritesController.getFavorites);
+router.get('/:userId/review-summary',checkToken, validate(usersSchema.getReviewSummary, 'params'), usersController.getReviewSummary);
 
 router.put('/update/:reviewId',checkToken, validate(reviewsSchema.updateReview, 'body'), reviewsController.updateReviews);
 

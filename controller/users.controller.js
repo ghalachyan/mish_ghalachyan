@@ -1,5 +1,7 @@
 import Users from "../models/Users.js";
 import utils from "../utils/utils.js";
+import Reviews from "../models/Reviews.js";
+import sequelize from "../clients/sequelize.mysql.js";
 
 export default {
     async registration(req, res) {
@@ -67,7 +69,7 @@ export default {
 
             const token = utils.createToken(payload, expiresIn);
 
-            if(user.role === 'admin') {
+            if (user.role === 'admin') {
                 res.status(200).json({
                     message: 'Login successfully',
                     token,
@@ -89,4 +91,47 @@ export default {
             });
         }
     },
+
+    async getReviewSummary(req, res) {
+        try {
+            const userId = req.params.userId;
+
+            const userExists = await Users.findByPk(userId);
+            if (!userExists) {
+                res.status(404).json({
+                    message: 'User not found.',
+                })
+                return;
+            }
+
+            const reviewSummary = await Reviews.findOne({
+                attributes: [
+                    [sequelize.fn('COUNT', sequelize.col('id')), 'totalReviews'],
+                    [sequelize.fn('AVG', sequelize.col('rating')), 'averageRating'],
+                    [sequelize.fn('COUNT', sequelize.col('bookId')), 'totalBooksReviewed'],
+                ],
+                where: {
+                    userId
+                }
+            });
+
+            if (!reviewSummary) {
+                res.status(404).json({
+                    message: 'No reviews found for this user',
+                    reviewSummary: []
+                });
+                return;
+            }
+
+            res.status(200).json({
+                message: 'User review summary retrieved successfully.',
+                reviewSummary
+            });
+        } catch (e) {
+            res.status(500).json({
+                message: 'Internal server error',
+                error: e.message,
+            });
+        }
+    }
 }
