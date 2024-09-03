@@ -139,6 +139,7 @@ export default {
 
     async getRated(req, res) {
         try {
+            const {id: userId} = req.user
             const total = await Books.count();
 
             const order = req.query.order;
@@ -165,6 +166,9 @@ export default {
                         'averageRating'
                     ]
                 ],
+                where: {
+                    userId
+                },
                 include: [
                     {
                         model: Reviews,

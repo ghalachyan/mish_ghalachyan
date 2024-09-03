@@ -97,6 +97,7 @@ export default {
             const userId = req.params.userId;
 
             const userExists = await Users.findByPk(userId);
+
             if (!userExists) {
                 res.status(404).json({
                     message: 'User not found.',
@@ -128,6 +129,80 @@ export default {
                 reviewSummary
             });
         } catch (e) {
+            res.status(500).json({
+                message: 'Internal server error',
+                error: e.message,
+            });
+        }
+    },
+
+    async getActiveReviewers(req, res) {
+        try {
+            const total = await Users.count();
+
+            let page = +req.query.page;
+            let limit = +req.query.limit;
+            const order = req.query.order;
+            const offset = (page - 1) * limit;
+
+            const maxPageCount = Math.ceil(total / limit);
+
+            if (page > maxPageCount) {
+                res.status(404).json({
+                    massage: 'Page not found.',
+                    books: []
+                });
+                return;
+            }
+
+            const {id: userId} = req.user;
+            const userExists = await Users.findByPk(userId);
+
+            if (!userExists) {
+                res.status(404).json({
+                    message: 'User not found.',
+                })
+                return;
+            }
+
+            const topActiveReviewers = await Users.findAll({
+                attributes: [
+                    'id',
+                    'userName',
+                    'email',
+                    [
+                        sequelize.fn('COUNT', sequelize.col('reviews.id')),
+                        'reviewCount'
+                    ],
+
+                ],
+
+                include: [
+                    {
+                        model: Reviews,
+                        attributes: []
+                    },
+                ],
+                group: ['id'],
+                order: [
+                    [
+                        sequelize.fn('COUNT', sequelize.col('reviews.id')),
+                        order
+                    ]
+                ],
+                // limit,
+                // offset
+            })
+
+            res.status(200).json({
+                message: 'Most active reviewers retrieved successfully.',
+                topActiveReviewers,
+                total,
+                currentPage: page,
+                totalPages: maxPageCount
+            })
+
+        }catch (e){
             res.status(500).json({
                 message: 'Internal server error',
                 error: e.message,
