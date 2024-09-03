@@ -11,7 +11,20 @@ BookCategory.init(
             primaryKey: true,
             allowNull: false,
         },
-
+        bookId: {
+            type: DataTypes.BIGINT.UNSIGNED,
+            references: {
+                model: 'books',
+                key: 'id',
+            }
+        },
+        categoryId: {
+            type: DataTypes.BIGINT.UNSIGNED,
+            references: {
+                model: 'category',
+                key: 'id',
+            }
+        },
     },
     {
         sequelize,

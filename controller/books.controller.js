@@ -1,7 +1,9 @@
 import Books from '../models/Books.js';
 import Users from '../models/Users.js';
+import Reviews from "../models/Reviews.js";
 import Category from '../models/Category.js';
 import BookCategory from "../models/BookCategory.js";
+import sequelize from "../clients/sequelize.mysql.js";
 
 export default {
     async createBook(req, res) {
@@ -38,7 +40,6 @@ export default {
                 })
                 return;
             }
-
 
             const newBook = await Books.create({
                 title,
@@ -82,7 +83,7 @@ export default {
             let limit = +req.query.limit;
             let offset = (page - 1) * limit;
 
-            const maxPageCount = Math.ceil(total / limit)
+            const maxPageCount = Math.ceil(total / limit);
 
             const userExists = await Users.findByPk(userId);
 
@@ -116,13 +117,17 @@ export default {
             if (books.length > 0) {
                 res.status(200).json({
                     message: 'Books retrieved successfully',
-                    books
+                    books,
+                    total,
+                    currentPage: page,
+                    totalPages: maxPageCount
                 });
                 return;
             }
 
             res.status(404).json({
                 message: 'No books found',
+                books: []
             });
         } catch (e) {
             res.status(500).json({
@@ -131,5 +136,65 @@ export default {
             });
         }
     },
+
+    async getRated(req, res) {
+        try {
+            const total = await Books.count();
+
+            const order = req.query.order;
+            let page = +req.query.page;
+            let limit = +req.query.limit;
+            const offset = (page - 1) * limit;
+
+            const maxPageCount = Math.ceil(total / limit);
+
+            if (page > maxPageCount) {
+                res.status(404).json({
+                    massage: 'Page not found.',
+                    books: []
+                });
+                return;
+            }
+            const topRatedBooks = await Books.findAll({
+                attributes: [
+                    'id',
+                    'title',
+                    'author',
+                    [
+                        sequelize.fn('AVG', sequelize.col('reviews.rating')),
+                        'averageRating'
+                    ]
+                ],
+                include: [
+                    {
+                        model: Reviews,
+                        attributes: []
+                    },
+                ],
+                group: ['id'],
+                order: [
+                    [
+                        sequelize.fn('AVG', sequelize.col('reviews.rating')),
+                        order
+                    ]
+                ],
+                // limit,
+                // offset
+            })
+
+            res.status(200).json({
+                message: 'Top-rated books retrieved successfully.',
+                topRatedBooks,
+                total,
+                currentPage: page,
+                totalPages: maxPageCount
+            });
+        } catch (e) {
+            res.status(500).json({
+                message: 'Internal server error',
+                error: e.message,
+            });
+        }
+    }
 
 }

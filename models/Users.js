@@ -1,7 +1,9 @@
 import sequelize from '../clients/sequelize.mysql.js';
-import {DataTypes} from 'sequelize';
+import {DataTypes, Model} from 'sequelize';
 
-const Users = sequelize.define('users',
+class Users extends Model {}
+
+Users.init(
     {
         id: {
             type: DataTypes.BIGINT.UNSIGNED,
@@ -36,6 +38,7 @@ const Users = sequelize.define('users',
 
     },
     {
+        sequelize,
         timestamps: true,
         modelName: 'users',
         tableName: 'users',

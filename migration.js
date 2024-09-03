@@ -41,7 +41,7 @@ Books.hasMany(Favorites,  {
 Books.belongsToMany(Category, {through: BookCategory})
 
 Reviews.belongsTo(Users);
-Reviews.belongsTo(Books);
+Reviews.belongsTo(Books, { foreignKey: 'bookId' });
 Reviews.hasMany(Comments, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",

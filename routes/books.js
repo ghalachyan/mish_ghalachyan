@@ -18,5 +18,6 @@ router.post('/:bookId/favorite', checkToken, validate(favoritesSchema.markFavori
 router.get('/list', checkToken, validate(booksSchema.getBooks, 'query'), booksController.getBooks);
 router.get('/:bookId/reviews', checkToken,validate(reviewsSchema.getReviews, 'query'), reviewsController.getReviews);
 router.get('/categories', checkToken, categoriesController.getCategories);
+router.get('/top-rated', checkToken, booksController.getRated);
 
 export default router;
