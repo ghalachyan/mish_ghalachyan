@@ -1,5 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../clients/sequelize.mysql.js';
+import Favorites from "./Favorites.js";
+import Category from "./Category.js";
+import BookCategory from "./BookCategory.js";
 
 class Books extends Model { }
 
@@ -36,5 +39,15 @@ Books.init(
         ]
     }
 );
+
+Books.hasMany(Favorites,  {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+    foreignKey: 'bookId'
+});
+Favorites.belongsTo(Books);
+
+Books.belongsToMany(Category, {through: BookCategory})
+Category.belongsToMany(Books, {through: BookCategory});
 
 export default Books;

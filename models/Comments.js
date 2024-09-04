@@ -1,5 +1,6 @@
 import {DataTypes, Model} from 'sequelize';
 import sequelize from '../clients/sequelize.mysql.js';
+import Reviews from "./Reviews.js";
 
 class Comments extends Model {}
 
@@ -24,5 +25,12 @@ Comments.init(
         tableName: 'comments',
     }
 );
+
+Reviews.hasMany(Comments, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+    foreignKey: 'reviewId'
+});
+Comments.belongsTo(Reviews);
 
 export default Comments;

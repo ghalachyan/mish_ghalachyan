@@ -31,4 +31,5 @@ Category.init(
     }
 );
 
+
 export default Category;

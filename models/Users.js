@@ -1,5 +1,9 @@
 import sequelize from '../clients/sequelize.mysql.js';
 import {DataTypes, Model} from 'sequelize';
+import Books from "./Books.js";
+import Favorites from "./Favorites.js";
+import Comments from "./Comments.js";
+import Reviews from "./Reviews.js";
 
 class Users extends Model {}
 
@@ -50,5 +54,32 @@ Users.init(
         ]
     }
 );
+
+Users.hasMany(Books, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+    foreignKey: 'userId'
+});
+Books.belongsTo(Users );
+
+Users.hasMany(Favorites, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+    foreignKey: 'userId'
+});
+Favorites.belongsTo(Users);
+
+Users.hasMany(Comments, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+    foreignKey: 'userId'
+});
+Comments.belongsTo(Users);
+
+Reviews.belongsTo(Users, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+    foreignKey: 'userId'
+});
 
 export default Users;
