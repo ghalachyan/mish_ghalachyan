@@ -17,7 +17,7 @@ export default {
                 defaults: {
                     userName,
                     email: email.toLowerCase(),
-                    password: utils.hashPassword(password),
+                    password
                 },
             });
 
@@ -49,7 +49,7 @@ export default {
                 where: {email: emailLowerCase}
             });
 
-            const hashPassword = utils.hashPassword(password);
+            const hashPassword = Users.hash(password);
 
             if (!user || hashPassword !== user.getDataValue('password')) {
                 res.status(401).json({

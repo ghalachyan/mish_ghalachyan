@@ -49,11 +49,15 @@ export default {
 
             const [bookCategory, created] = await BookCategory.findOrCreate({
                 where: {bookId: newBook.id, categoryId},
+                defaults:{
+                    bookId: newBook.id,
+                    categoryId
+                }
             });
 
             if (newBook) {
                 res.status(201).json({
-                    message: 'Book created successfully.',
+                    message: 'Book and category created successfully.',
                     newBook,
                     bookCategory,
                 })
@@ -140,7 +144,11 @@ export default {
     async getRated(req, res) {
         try {
             const {id: userId} = req.user
-            const total = await Books.count();
+            const total = await Books.count({
+                where: {
+                    userId
+                }
+            });
 
             const order = req.query.order;
             let page = +req.query.page;

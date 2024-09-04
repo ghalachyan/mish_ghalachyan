@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import usersSchema from '../schemas/users.js';
-import reviewsSchema from "../schemas/reviews.js";
-import favoritesSchema from '../schemas/favorites.js';
 import validate from '../middleware/validate.js';
+import reviewsSchema from "../schemas/reviews.js";
+import checkToken from "../middleware/checkToken.js";
+import favoritesSchema from '../schemas/favorites.js';
 import usersController from '../controller/users.controller.js';
 import reviewsController from "../controller/reviews.controller.js";
 import favoritesController from "../controller/favorites.controller.js";
-import checkToken from "../middleware/checkToken.js";
 
 const router = Router();
 

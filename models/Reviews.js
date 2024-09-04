@@ -32,13 +32,4 @@ Reviews.init(
     }
 );
 
-
-Reviews.belongsTo(Books, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-    foreignKey: 'bookId'
-});
-
-
-
 export default Reviews;

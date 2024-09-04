@@ -3,6 +3,7 @@ import sequelize from '../clients/sequelize.mysql.js';
 import Favorites from "./Favorites.js";
 import Category from "./Category.js";
 import BookCategory from "./BookCategory.js";
+import Reviews from "./Reviews.js";
 
 class Books extends Model { }
 
@@ -49,5 +50,12 @@ Favorites.belongsTo(Books);
 
 Books.belongsToMany(Category, {through: BookCategory})
 Category.belongsToMany(Books, {through: BookCategory});
+
+Books.hasMany(Reviews);
+Reviews.belongsTo(Books, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+    foreignKey: 'bookId'
+});
 
 export default Books;

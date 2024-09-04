@@ -1,11 +1,18 @@
-import sequelize from '../clients/sequelize.mysql.js';
-import {DataTypes, Model} from 'sequelize';
+import md5 from "md5";
 import Books from "./Books.js";
-import Favorites from "./Favorites.js";
-import Comments from "./Comments.js";
 import Reviews from "./Reviews.js";
+import Comments from "./Comments.js";
+import Favorites from "./Favorites.js";
+import {DataTypes, Model} from 'sequelize';
+import sequelize from '../clients/sequelize.mysql.js';
 
-class Users extends Model {}
+const { USER_PASSWORD_SECRET } = process.env;
+
+class Users extends Model {
+    static  hash (password){
+        return md5(md5(password) + USER_PASSWORD_SECRET);
+    }
+}
 
 Users.init(
     {
@@ -31,6 +38,9 @@ Users.init(
             allowNull: false,
             get() {
                 return '*****';
+            },
+            set (value) {
+                this.setDataValue('password', Users.hash(value));
             },
         },
 
@@ -76,6 +86,11 @@ Users.hasMany(Comments, {
 });
 Comments.belongsTo(Users);
 
+Users.hasMany(Reviews, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+    foreignKey: 'userId'
+});
 Reviews.belongsTo(Users, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
