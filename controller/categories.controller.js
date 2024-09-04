@@ -27,26 +27,4 @@ export default {
             });
         }
     },
-
-    // async addBookCategory(req, res) {
-    //     try {
-    //         const userId = req.user.id;
-    //
-    //         const user = await Users.findByPk(userId);
-    //
-    //         if (!user) {
-    //             res.status(404).json({
-    //                 message: 'User not found.',
-    //             });
-    //             return;
-    //         }
-    //
-    //
-    //     }catch (e) {
-    //         res.status(500).json({
-    //             message: 'Internal server error',
-    //             error: e.message,
-    //         });
-    //     }
-    // }
 }

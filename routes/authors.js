@@ -6,6 +6,6 @@ import authorsController from '../controller/authors.controller.js';
 
 const router = Router();
 
-router.get('/book-count',checkToken,validate(authorsSchema.getUsers, 'query'),  authorsController.getBooksCount);
+router.get('/book-count',checkToken,validate(authorsSchema.getAuthorsBooks, 'query'),  authorsController.getBooksCount);
 
 export default router;
