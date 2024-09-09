@@ -28,7 +28,7 @@ export default {
             if (!param2) {
 
                 if (avatar) {
-                   await fs.unlink(avatar);
+                    await fs.unlink(avatar);
                 }
 
                 res.status(409).json({
@@ -138,6 +138,27 @@ export default {
                 error: e.message,
             });
         }
+    },
+
+    async delete(req, res) {
+        const {id} = req.user;
+        console.log(req.user)
+        const user = await Users.findByPk(id);
+
+        if (!user) {
+            res.status(404).json({
+                message: 'User not found.',
+            });
+
+            return;
+        }
+
+        await utils.deleteFile(user.avatar);
+        await user.destroy();
+
+        res.status(200).json({
+            message: 'Deleted successfully',
+        })
     },
 
     async getReviewSummary(req, res) {
