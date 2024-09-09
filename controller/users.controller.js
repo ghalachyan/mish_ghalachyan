@@ -1,3 +1,4 @@
+import fs from 'fs/promises';
 import utils from "../utils/utils.js";
 import Users from "../models/Users.js";
 import Reviews from "../models/Reviews.js";
@@ -25,6 +26,11 @@ export default {
             });
 
             if (!param2) {
+
+                if (avatar) {
+                   await fs.unlink(avatar);
+                }
+
                 res.status(409).json({
                     message: 'Email already exists!'
                 });
