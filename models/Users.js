@@ -44,6 +44,10 @@ Users.init(
             },
         },
 
+        avatar: {
+            type: DataTypes.STRING,
+        },
+
         role: {
             type: DataTypes.ENUM('user', 'admin'),
             defaultValue: 'user',

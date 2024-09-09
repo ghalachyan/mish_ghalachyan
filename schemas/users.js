@@ -12,6 +12,11 @@ export default {
         password: Joi.string().trim().min(8).max(16).required()
     }),
 
+    update: Joi.object({
+        userName: Joi.string().trim().min(2).max(20).required(),
+        email: Joi.string().trim().email().required(),
+    }),
+
     getReviewSummary: Joi.object({
         userId: Joi.number().integer().positive().required(),
     }),

@@ -1,5 +1,5 @@
-import Users from "../models/Users.js";
 import utils from "../utils/utils.js";
+import Users from "../models/Users.js";
 import Reviews from "../models/Reviews.js";
 import sequelize from "../clients/sequelize.mysql.js";
 
@@ -12,12 +12,15 @@ export default {
                 password,
             } = req.body
 
+            const avatar = await utils.handleFilePath(req.file);
+
             const [param1, param2] = await Users.findOrCreate({
                 where: {email: email.toLowerCase()},
                 defaults: {
                     userName,
                     email: email.toLowerCase(),
-                    password
+                    password,
+                    avatar,
                 },
             });
 
@@ -84,6 +87,45 @@ export default {
                 isAdmin: false
             });
 
+        } catch (e) {
+            res.status(500).json({
+                message: 'Internal server error',
+                error: e.message,
+            });
+        }
+    },
+
+    async update(req, res) {
+        try {
+            const {id} = req.user;
+            const {userName, email} = req.body;
+
+            const user = await Users.findByPk(id);
+
+            if (!user) {
+                res.status(404).json({
+                    message: 'User not found.',
+                });
+
+                return;
+            }
+
+            const avatar = await utils.updateFile(req.file, user.avatar);
+
+            await Users.update(
+                {
+                    userName,
+                    email,
+                    avatar,
+                },
+                {
+                    where: {id}
+                }
+            );
+
+            res.status(200).json({
+                message: 'User updated successfully',
+            })
         } catch (e) {
             res.status(500).json({
                 message: 'Internal server error',
@@ -202,7 +244,7 @@ export default {
                 totalPages: maxPageCount
             })
 
-        }catch (e){
+        } catch (e) {
             res.status(500).json({
                 message: 'Internal server error',
                 error: e.message,
