@@ -2,7 +2,7 @@ import {Router} from 'express';
 import usersSchema from '../schemas/users.js';
 import validate from '../middleware/validate.js';
 import reviewsSchema from "../schemas/reviews.js";
-import checkFile from "../middleware/fileUpload.js";
+import checkFile from "../middleware/checkFile.js";
 import checkToken from "../middleware/checkToken.js";
 import favoritesSchema from '../schemas/favorites.js';
 import usersController from '../controller/users.controller.js';

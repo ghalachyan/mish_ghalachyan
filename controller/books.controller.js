@@ -40,7 +40,6 @@ export default {
                 })
                 return;
             }
-
             const newBook = await Books.create({
                 title,
                 author,
